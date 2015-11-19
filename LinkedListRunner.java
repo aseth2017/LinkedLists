@@ -4,8 +4,8 @@ public class LinkedListRunner
 	{
 		LinkedList<Integer> x = new LinkedList<Integer> ();
 		x.add(2);
-		x.add(17);
 		System.out.println(x.removeFirst());
-		System.out.print(x);
+		x.add(1);
+		System.out.println(x);
 	}
 }

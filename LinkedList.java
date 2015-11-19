@@ -29,11 +29,22 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 		head = h;
 		size++;
 	}
+	/**
+	 * Copy constructor
+	 * @param other LinkedList that will be copied to the current List
+	 */
+	public LinkedList(LinkedList<E> other)
+	{
+		ListNode<E> copy = new ListNode<E> (other.head.getObject());
+		for(int i = 0; i < other.size; i++)
+		{
+			add(copy.getObject());
+		}
+	}
 	public int Size()
 	{
 		return size;
 	}
-	
 	public int Size(ListNode<E> node)
 	{
 		if(node == null)
@@ -41,10 +52,21 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 		else
 			return Size(node.getNext());
 	}
+	/**
+	 * Adds an item to the end of the LinkedList
+	 * @param item Object that is added to the LinkedList
+	 * @return Boolean on whether or not we can add the object to the LinkedList
+	 */
 	public boolean add(E item)
 	{
 		return add(item, size);
 	}
+	/**
+	 * Adds an item to a specific index in the LinkedList
+	 * @param item Object that is added to the LinkedList
+	 * @param i Index of the LinkedList where the item is added
+	 * @return Boolean on whether or not we can add the object to the LinkedList
+	 */
 	public boolean add(E item, int i)
 	{
 		ListNode<E> x = new ListNode<E>(item);
@@ -67,9 +89,9 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 			return true;
 		}
 		int index = 0;
-		for(ListNode<E> next = head.getNext(); next != null; next = next.getNext())
+		for(ListNode<E> next = head; next != null; next = next.getNext())
 		{
-			if(index == i-1)
+			if(index == i-1 && next != null)
 			{
 				x.setNext(next.getNext());
 				next.setNext(x);
@@ -80,71 +102,62 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 		}
 		return false;
 	}
-	//How the list will be displayed once printed
-	public String toString()
-	{
-		String s = "{";
-		for(ListNode<E> x = head.getNext(); x != null; x = x.getNext())
-		{
-			s += x.toString() + ", ";
-		}
-		s += "}";
-		return s;
-	}
-/*	
-	//Copy constructor
-	public LinkedList(LinkedList<E> other)
-	{
-		
-	}
-	//Add object to the end of the list 
-	public void add(E o)
-	{
-		
-	}
 	//Add object to stack
 	public void push(E item)
 	{
-		
+		add(item);
 	}
 	//Add object to queue
 	public void offer(E item)
 	{
-		
+		add(item);
 	}
 	//Remove item and return whether or not object was removed
 	public boolean remove(E o)
 	{
-		
+		if(!contains(o))
+			return false;
+		else
+		{
+			int i = 0;
+			for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
+			{
+				if(i == indexOf(o))
+				{
+					curr.setObject(null);
+					return true;
+				}
+				i++;
+			}
+			return false;
+		}
 	}
 	//Remove and return item at specified index
 	public E remove(int index)
 	{
+		if(index < 0 || index > size)
+			throw new IndexOutOfBoundsException();
 		int counter = 0;
-		ListNode<E> x = head;
-		while(counter <= index)
+		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 		{
 			if(counter==index)
 			{
-				
+				E hold = curr.getObject();
+				curr.setObject(null);
+				return hold;
 			}
 		}
-	}*/
+		return null;
+	}
 	//Remove and return first item in the list
 	public E removeFirst()
 	{
-		E hold = head.getObject();
-		head = head.getNext();
-		size--;
-		return hold;
+		return remove(0);
 	}
-/*	//Remove and return last item in the list
+	//Remove and return last item in the list
 	public E removeLast()
 	{
-		E hold = tail.getObject();
-		tail = null;
-		size--;
-		return hold;
+		return remove(size);
 	}
 	//Add object to front of list
 	public void addFirst(E item)
@@ -156,6 +169,7 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 	{
 		add(item);
 	}
+
 	//Return whether or not list contains specified object
 	public boolean contains(E o)
 	{
@@ -171,6 +185,7 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 	{
 		return size;
 	}
+/*
 	//Remove all items from the list
 	public void clear()
 	{
@@ -191,10 +206,18 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 	{
 		
 	}
+*/
 	//Return index of the first instance of specified object
 	public int indexOf(E o)
 	{
-		
+		int i = 0;
+		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
+		{
+			if(curr.getObject() == o)
+				return i;
+			i++;
+		}
+		return -1;
 	}
 	//Remove object from queue
 	public E poll()
@@ -209,8 +232,29 @@ public class LinkedList<E>// implements Stack<E>, Queue<E>
 	//Return whether or not list is empty
 	public boolean isEmpty()
 	{
-		
+		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
+		{
+			if(curr.getObject() == null)
+				return false;
+		}
+		return true;
 	}
+
+	/**
+	 * How the list will be displayed once printed
+	 * @return A string representation of the LinkedList
+	 */
+	public String toString()
+	{
+		String s = "{ ";
+		for(ListNode<E> x = head.getNext(); x != null; x = x.getNext())
+		{
+			s += "[" + x.toString() + "] ";
+		}
+		s += "}";
+		return s;
+	}
+/*
 	//Create and return an iterator
 	public Iterator<E> iterator()
 	{

@@ -1,4 +1,10 @@
-
+/**
+ * Creates a ListNode, which is a data structure inside the LinkedList
+ * Has an object which it contains and a pointer to the next ListNode
+ * @author Anish Seth
+ * @version 11-12-15
+ * @param <E> The type of ListNode being created
+ */
 public class ListNode<E>
 {
 	private E object;
